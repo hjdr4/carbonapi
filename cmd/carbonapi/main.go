@@ -46,6 +46,10 @@ func main() {
 	handler = handlers.CORS()(handler)
 	handler = handlers.ProxyHeaders(handler)
 
+	logger.Info("carbonapi initialized",
+		zap.String("listen", config.Config.Listen),
+	)
+
 	err = gracehttp.Serve(&http.Server{
 		Addr:    config.Config.Listen,
 		Handler: handler,
