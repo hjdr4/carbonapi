@@ -63,7 +63,7 @@ func SetUpConfig(logger *zap.Logger, BuildVersion string) {
 			break
 		}
 	}
-	fmt.Printf("\n\n\n\n\nneedStackTrace=%v\n\n\n\n",needStackTrace)
+	fmt.Printf("\n\n\n\n\nneedStackTrace=%v\n\n\n\n", needStackTrace)
 	merry.SetStackCaptureEnabled(needStackTrace)
 
 	if Config.GraphTemplates != "" {

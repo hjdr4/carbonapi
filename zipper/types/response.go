@@ -365,7 +365,6 @@ func (first *ServerFetchResponse) Merge(second *ServerFetchResponse) merry.Error
 	return nil
 }
 
-
 func (first *ServerFetchResponse) MergeI(second ServerFetcherResponse) merry.Error {
 	secondSelf := second.Self()
 	s, ok := secondSelf.(*ServerFetchResponse)

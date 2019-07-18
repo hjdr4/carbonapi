@@ -231,5 +231,5 @@ func (bg *AutoGroup) TagValues(ctx context.Context, tagName string, prefix strin
 }
 
 func (c *AutoGroup) ProbeTLDs(ctx context.Context) ([]string, merry.Error) {
-	return nil,merry.New("auto group doesn't support probing")
+	return nil, merry.New("auto group doesn't support probing")
 }

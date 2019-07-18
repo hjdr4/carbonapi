@@ -401,7 +401,7 @@ func (c *PrometheusGroup) Find(ctx context.Context, request *protov3.MultiGlobRe
 		}
 	}
 
-	if e != nil  {
+	if e != nil {
 		logger.Error("errors occurred while getting results",
 			zap.Any("errors", e),
 		)
