@@ -62,6 +62,7 @@ type ConfigType struct {
 	FunctionsConfigs           map[string]string  `mapstructure:"functionsConfig"`
 	HeadersToPass              []string           `mapstructure:"headersToPass"`
 	HeadersToLog               []string           `mapstructure:"headersToLog"`
+	NotFoundStatusCode         int                `mapstructure:"notFoundStatusCode"`
 
 	QueryCache cache.BytesCache `mapstructure:"-" json:"-"`
 	FindCache  cache.BytesCache `mapstructure:"-" json:"-"`
@@ -125,4 +126,5 @@ var Config = ConfigType{
 	},
 	ExpireDelaySec:             10 * 60,
 	GraphiteWeb09Compatibility: false,
+	NotFoundStatusCode:         404,
 }
