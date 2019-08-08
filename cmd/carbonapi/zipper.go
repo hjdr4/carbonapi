@@ -45,7 +45,7 @@ func newZipper(sender func(*zipperTypes.Stats), config *zipperCfg.Config, ignore
 	return z
 }
 
-func (z zipper) Find(ctx context.Context, metrics []string) (*pb.MultiGlobResponse, *zipperTypes.Stats, error) {
+func (z zipper) Find(ctx context.Context, metrics []string, startTime, stopTime int64) (*pb.MultiGlobResponse, *zipperTypes.Stats, error) {
 	newCtx := ctx
 	if z.ignoreClientTimeout {
 		uuid := util.GetUUID(ctx)
@@ -55,7 +55,9 @@ func (z zipper) Find(ctx context.Context, metrics []string) (*pb.MultiGlobRespon
 	}
 
 	req := pb.MultiGlobRequest{
-		Metrics: metrics,
+		Metrics:   metrics,
+		StartTime: startTime,
+		StopTime:  stopTime,
 	}
 
 	res, stats, err := z.z.FindProtoV3(newCtx, &req)

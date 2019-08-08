@@ -13,10 +13,10 @@ import (
 	"github.com/go-graphite/carbonapi/expr/types"
 	"github.com/go-graphite/carbonapi/pkg/parser"
 	utilctx "github.com/go-graphite/carbonapi/util/ctx"
+	uuid "github.com/satori/go.uuid"
 
 	pb "github.com/go-graphite/protocol/carbonapi_v3_pb"
 	"github.com/lomik/zapwriter"
-	"github.com/satori/go.uuid"
 	"go.uber.org/zap"
 )
 

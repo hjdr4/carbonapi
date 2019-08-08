@@ -65,6 +65,10 @@ message MultiFetchResponse {
 // Find Metrics
 message MultiGlobRequest {
     repeated string metrics = 1;
+    int64 startTime = 2;
+    int64 stopTime = 3;
+    // Should be true if timestamps have better precision than seconds.
+    bool highPrecisionTimestamps = 4;
 }
 
 message GlobMatch {

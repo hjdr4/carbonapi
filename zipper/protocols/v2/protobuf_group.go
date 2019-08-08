@@ -215,6 +215,13 @@ func (c *ClientProtoV2Group) Find(ctx context.Context, request *protov3.MultiGlo
 			"query":  []string{query},
 			"format": []string{format},
 		}
+		if request.StartTime != 0 {
+			v.Add("from", strconv.Itoa(int(request.StartTime)))
+		}
+		if request.StopTime != 0 {
+			v.Add("until", strconv.Itoa(int(request.StopTime)))
+		}
+
 		rewrite.RawQuery = v.Encode()
 		logger.Debug("doing http query")
 		res, err := c.httpQuery.DoQuery(ctx, logger, rewrite.RequestURI(), nil)

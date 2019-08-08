@@ -401,7 +401,7 @@ func (z Zipper) FetchProtoV3(ctx context.Context, request *protov3.MultiFetchReq
 func (z Zipper) FindProtoV3(ctx context.Context, request *protov3.MultiGlobRequest) (*protov3.MultiGlobResponse, *types.Stats, error) {
 	searchRequests := &protov3.MultiGlobRequest{}
 	if z.searchConfigured {
-		realRequest := &protov3.MultiGlobRequest{Metrics: make([]string, 0, len(request.Metrics))}
+		realRequest := &protov3.MultiGlobRequest{Metrics: make([]string, 0, len(request.Metrics)), StartTime: request.StartTime, StopTime: request.StopTime}
 		for _, m := range request.Metrics {
 			if strings.HasPrefix(m, z.searchPrefix) {
 				searchRequests.Metrics = append(searchRequests.Metrics, m)
@@ -549,9 +549,11 @@ func (z Zipper) FetchProtoV2(ctx context.Context, query []string, startTime, sto
 	return &res, stats, nil
 }
 
-func (z Zipper) FindProtoV2(ctx context.Context, query []string) ([]*protov2.GlobResponse, *types.Stats, error) {
+func (z Zipper) FindProtoV2(ctx context.Context, query []string, startTime, stopTime int32) ([]*protov2.GlobResponse, *types.Stats, error) {
 	request := &protov3.MultiGlobRequest{
-		Metrics: query,
+		Metrics:   query,
+		StartTime: int64(startTime),
+		StopTime:  int64(stopTime),
 	}
 	grpcReses, stats, err := z.FindProtoV3(ctx, request)
 	if err != nil {

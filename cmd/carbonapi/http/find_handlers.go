@@ -10,12 +10,13 @@ import (
 
 	"github.com/go-graphite/carbonapi/carbonapipb"
 	"github.com/go-graphite/carbonapi/cmd/carbonapi/config"
+	"github.com/go-graphite/carbonapi/date"
 	"github.com/go-graphite/carbonapi/intervalset"
 	utilctx "github.com/go-graphite/carbonapi/util/ctx"
 	pb "github.com/go-graphite/protocol/carbonapi_v3_pb"
 	pickle "github.com/lomik/og-rek"
 	"github.com/lomik/zapwriter"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 // Find handler and it's helper functions
@@ -212,7 +213,22 @@ func findHandler(w http.ResponseWriter, r *http.Request) {
 		format = treejsonFormat
 	}
 
-	multiGlobs, stats, err := config.Config.ZipperInstance.Find(ctx, query)
+	err := r.ParseForm()
+	if err != nil {
+		setError(w, &accessLogDetails, err.Error(), http.StatusBadRequest)
+		logAsError = true
+		return
+	}
+
+	from := r.FormValue("from")
+	until := r.FormValue("until")
+
+	// normalize from and until values
+	qtz := r.FormValue("tz")
+	from64 := date.DateParamToEpoch(from, qtz, timeNow().Add(-24*time.Hour).Unix(), config.Config.DefaultTimeZone)
+	until64 := date.DateParamToEpoch(until, qtz, timeNow().Unix(), config.Config.DefaultTimeZone)
+
+	multiGlobs, stats, err := config.Config.ZipperInstance.Find(ctx, query, from64, until64)
 	if stats != nil {
 		accessLogDetails.ZipperRequests = stats.ZipperRequests
 		accessLogDetails.TotalMetricsCount += stats.TotalMetricsCount
